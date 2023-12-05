@@ -11,54 +11,9 @@ the best user experience based on their level(beginner or intermediate)
 -in beginner the system asks the user a few questions then automatically finds the best specification based on the users answers
 -in intermediate the system allows the user to chose a few of the components then fills the rest of the specifications based on the users answers
 """
+from specs_configurator import *
+from beginner_functions import *
 
-#All the different PC specs are arranged in arrays below for ease of access when configuring the PCs
-cpu = ["i3 13100f" ,"i5 13400f" , "i5 13600k" , "i7 13700k" , "i9 13900k"]
-gpu = ["rtx 3050" , "rtx 4060" , "rtx 4070" , "rtx 4080" , "rtx 4090"]
-ram = ["8gb" , "16gb" , "32gb" , "64gb" , "128gb"]
-motherboard = ["H610" , "B760" , "Z690" , "Z790"]
-cpu_cooling = ["stock" , "Air cooling" , "240 aio" , "360 aio" ]
-storage = ["500gb ssd" , "1tb ssd" , "2tb ssd" , "8tb ssd"]
-psu = ["550w" , "650w" , "750w" , "850w" , "1000w"]
-prices = [ "500" , "750" , "1000" , "2000" ]
-tier = 0 #tier is the price range level, its takes the index value for the prices list and uses it to determine the pc parts 0 for <500 , 1 for 750, 2 for 1000, 3 for 2000. 
-
-
-# the function below determines the tier based on the price range
-def tier_function(price_range):#it takes the value price_range then decides what tier it is, finally it returns the tier value
-    if (price_range==500):
-        tier = 0 #tier is the price range level, its takes the index value for the prices list and uses it to determine the pc parts 0 for <500 , 1 for 750, 2 for 1000, 3 for 2000.
-    elif (price_range==750):
-        tier = 1
-    elif (price_range==1000):
-        tier = 2
-    elif (price_range>1000):
-        tier = 3
-    return tier
-
-
-
-# the function below gives out the appropriate specs based on price range and use case(gaming)
-def pc_specs_g(tier):#this function uses the same tier value used in the tier_function and then makes a build based on it
-    print("You have chosen Gaming as your use case, as such the GPU would be the priority because it is the main component used in rendering games and its directly related to your PCs gaming performance")
-    print("the appropriate PC specs for your use case are:")
-    tier_function(price_range)#calling the tier function to reduce code size,it will immedietly determine the appropriate tier based on the price range to pick the best specs
-    print("CPU: " + cpu[tier],"GPU: " + gpu[tier+1],"RAM: " + ram[tier],"Motherboard: " + motherboard[tier],"CPU cooling: " + cpu_cooling[tier],"storage: " + storage[tier],"PSU: " + psu[tier],sep='\n')
-    print("these are the current recomended specs to match your budget, the total price is around", price_range, "dollars")
-    return
-
-#the function below gives out the appropriate specs based on price range and use case(pro work)
-def pc_specs_p(tier):
-    print("You have chosen Professional work as your use case, as such the CPU and Memory would be the priority Because those components directly affect your computers performance in professional workloads")
-    print("the appropriate PC specs for your use case are:")
-    tier_function(price_range)#calling the tier function to reduce code size,it will immedietly determine the appropriate tier based on the price range to pick the best specs
-    if tier == 0: #if the tier is 0 meaning that the price is 500dollars, then there will be no GPU and the cpu and ram will be prioritized
-        print("CPU: " + cpu[tier+1],"RAM: " + ram[tier+1],"Motherboard: " + motherboard[tier],"CPU cooling: " + cpu_cooling[tier],"storage: " + storage[tier],"PSU: " + psu[tier],sep='\n')
-        print("these are the current recomended specs to match your budget, the total price is around", price_range, "dollars")
-    else:# else if the tier is greater than 0, meaning the price is more than 500, a GPU would be added but reduced by 1 tier, while the cpu and ram will be prioritized
-        print("CPU: " + cpu[tier+1],"GPU: " + gpu[tier-1],"RAM: " + ram[tier+1],"Motherboard: " + motherboard[tier],"CPU cooling: " + cpu_cooling[tier],"storage: " + storage[tier],"PSU: " + psu[tier],sep='\n')
-        print("these are the current recomended specs to match your budget, the total price is around", price_range, "dollars")
-    return
 
 
 #End of variable and functions setup
@@ -88,9 +43,13 @@ while(answer == "Y" or answer == "y"): #starts a loop which only runs if the ans
                     
                     if (user_usecase == "G" or user_usecase == "g"):#if the user choses gaming, the function pc_specs_g will be called which uses the tier variable to determine the specs
                         pc_specs_g(tier)
+                        print("these are the current recomended specs to match your budget, the total price is around", price_range, "dollars")
+
                         x = False # the variable x is now set to False to break the loop
                     elif (user_usecase == "P" or user_usecase == "p"):#if the user choses professional work, the function pc_specs_p will be called which uses the tier variable to determine the specs
-                        pc_specs_p(tier)          
+                        pc_specs_p(tier) 
+                        print("these are the current recomended specs to match your budget, the total price is around", price_range, "dollars")
+         
                         x = False # the variable x is now set to False to break the loop
                     else:#end of use case loop which allows for another attempt
                         print("\nyou have made an invalid choice, try again!!\n")
